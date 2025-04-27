@@ -1,28 +1,133 @@
+<!-- FinFlora Chatbot Bubble -->
+<div id="chatBubble" onclick="openChat()">
+  <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="Flora Icon" style="width: 50px; height: 50px;">
+</div>
+
+<!-- FinFlora Chat Window -->
+<div id="chatWindow" style="display: none;">
+  <div id="chatHeader">
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="Flora Icon" style="width: 30px; height: 30px; margin-right: 10px;">
+    <span>FinFloraa 🌸</span>
+    <button onclick="closeChat()" style="margin-left:auto; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+  </div>
+  <div id="messages"></div>
+  <div id="quickReplies"></div>
+  <div id="userInputArea">
+    <input type="text" id="userInput" placeholder="Aapka sawaal likhiye..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<!-- CSS Styling -->
 <style>
+#chatBubble {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4CAF50;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+#chatWindow {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: white;
+  border: 2px solid #4CAF50;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 9999;
+}
+#chatHeader {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+#messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+#messages .message {
+  margin-bottom: 10px;
+}
+.message.user {
+  text-align: right;
+  color: #333;
+}
+.message.bot {
+  text-align: left;
+  color: #4CAF50;
+}
+#quickReplies {
+  display: none;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 10px;
+}
+#userInputArea {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+#userInput {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  outline: none;
+}
+#userInputArea button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+/* Buttons with Icon */
 .icon-button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background-color: #4CAF50;
   color: white;
-  padding: 10px 16px;
-  margin: 8px 0;
+  padding: 8px 12px;
   border: none;
   border-radius: 30px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 .icon-button:hover {
   background-color: #45a049;
 }
 .icon-button img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 </style>
 
+<!-- JavaScript -->
 <script>
+function openChat() {
+  document.getElementById('chatWindow').style.display = 'flex';
+  document.getElementById('chatBubble').style.display = 'none';
+}
+function closeChat() {
+  document.getElementById('chatWindow').style.display = 'none';
+  document.getElementById('chatBubble').style.display = 'block';
+}
+
 const faqs = {
   "sip kya hota hai": "SIP ka matlab hai Systematic Investment Plan, jisme aap fixed amount regular invest karte hain.",
   "mutual fund kya hota hai": "Mutual fund me log apna paisa ek saath lagate hain aur expert usse manage karta hai.",
@@ -49,7 +154,6 @@ function sendMessage() {
       }
     }
 
-    // Check for calculator related queries
     if (!found && (
         userText.toLowerCase().includes("calculator") ||
         userText.toLowerCase().includes("invest") ||
@@ -63,7 +167,6 @@ function sendMessage() {
       return;
     }
 
-    // Check for more information
     if (!found && (
         userText.toLowerCase().includes("more") ||
         userText.toLowerCase().includes("details") ||
@@ -78,42 +181,7 @@ function sendMessage() {
 
     botReply(reply);
     showFAQOptions();
-  }, 1000);
-}
-
-function showCalculatorButton() {
-  const quickReplies = document.getElementById("quickReplies");
-  quickReplies.innerHTML = "";
-  quickReplies.style.display = 'flex';
-
-  const btn = document.createElement("button");
-  btn.className = "icon-button";
-  btn.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Calculator"> Calculator Dekhein`;
-
-  btn.onclick = () => {
-    botReply("Yeh raha aapka Calculator! 📊");
-    document.getElementById("calculatorSection").style.display = 'block';
-    document.getElementById("contactButtons").style.display = 'block';
-    document.getElementById("quickReplies").style.display = 'none';
-  };
-  quickReplies.appendChild(btn);
-}
-
-function showKnowMoreButton() {
-  const quickReplies = document.getElementById("quickReplies");
-  quickReplies.innerHTML = "";
-  quickReplies.style.display = 'flex';
-
-  const btn = document.createElement("button");
-  btn.className = "icon-button";
-  btn.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" alt="Info"> Contact aur Details`;
-
-  btn.onclick = () => {
-    botReply("Aap hume contact kar sakte hain ya form bhar sakte hain! ✨");
-    document.getElementById("contactButtons").style.display = 'block';
-    document.getElementById("quickReplies").style.display = 'none';
-  };
-  quickReplies.appendChild(btn);
+  }, 800);
 }
 
 function botThinking() {
@@ -131,6 +199,42 @@ function addMessage(text, sender) {
   div.innerText = text;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
+}
+
+function showCalculatorButton() {
+  const quickReplies = document.getElementById("quickReplies");
+  quickReplies.innerHTML = "";
+  quickReplies.style.display = 'flex';
+
+  const btn = document.createElement("button");
+  btn.className = "icon-button";
+  btn.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Calculator Icon"> Calculator Dekhein`;
+
+  btn.onclick = () => {
+    botReply("Yeh raha aapka Calculator! 📊");
+    // Calculator Section Show Logic Here
+    alert('Calculator section dikhana hai!'); 
+    quickReplies.style.display = 'none';
+  };
+  quickReplies.appendChild(btn);
+}
+
+function showKnowMoreButton() {
+  const quickReplies = document.getElementById("quickReplies");
+  quickReplies.innerHTML = "";
+  quickReplies.style.display = 'flex';
+
+  const btn = document.createElement("button");
+  btn.className = "icon-button";
+  btn.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" alt="Info Icon"> Contact aur Details`;
+
+  btn.onclick = () => {
+    botReply("Aap hume contact kar sakte hain ya form bhar sakte hain! ✨");
+    // Contact Section Show Logic Here
+    alert('Contact ya form section dikhana hai!');
+    quickReplies.style.display = 'none';
+  };
+  quickReplies.appendChild(btn);
 }
 
 document.getElementById("userInput").addEventListener("keypress", function(e) {
