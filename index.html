@@ -1,4 +1,143 @@
-<!-- Bas script part change kiya hai -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FinFloraa 🌸 | Grow With Confidence</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      height: 100vh;
+    }
+    #chatBubble {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      padding: 12px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 9999;
+    }
+    #chatBubble img {
+      width: 50px;
+      height: 50px;
+    }
+    #chatWindow {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      max-height: 450px;
+      background: white;
+      border: 2px solid #4CAF50;
+      border-radius: 15px;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 9999;
+    }
+    #chatHeader {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+    }
+    #chatHeader img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    #messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    #messages .message {
+      margin-bottom: 10px;
+    }
+    .message.user {
+      text-align: right;
+      color: #333;
+    }
+    .message.bot {
+      text-align: left;
+      color: #4CAF50;
+    }
+    #quickReplies {
+      display: none;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 10px;
+    }
+    #userInputArea {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    #userInput {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      outline: none;
+    }
+    #userInputArea button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 0 16px;
+      cursor: pointer;
+    }
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .icon-button:hover {
+      background-color: #45a049;
+    }
+    .icon-button img {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- FinFlora Bubble -->
+<div id="chatBubble" onclick="openChat()">
+  <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="Flora Icon">
+</div>
+
+<!-- FinFlora Chat Window -->
+<div id="chatWindow">
+  <div id="chatHeader">
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712139.png" alt="Flora Icon">
+    <span>FinFloraa 🌸</span>
+    <button onclick="closeChat()" style="margin-left:auto; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+  </div>
+  <div id="messages"></div>
+  <div id="quickReplies"></div>
+  <div id="userInputArea">
+    <input type="text" id="userInput" placeholder="Aapka sawaal likhiye..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
 
 <script>
 function openChat() {
@@ -11,12 +150,10 @@ function closeChat() {
 }
 
 const faqs = {
-  "sip": "SIP ka matlab hai Systematic Investment Plan, jisme aap fixed amount regular invest karte hain.",
-  "mutual fund": "Mutual fund me log apna paisa ek saath lagate hain aur expert usse manage karta hai.",
-  "growfin": "GrowFin Wealth SIP planning, mutual funds, retirement aur goal planning me madad karta hai.",
-  "elss": "ELSS tax saving mutual fund hai jisme 3 saal ka lock-in period hota hai aur tax benefit milta hai.",
-  "goal planning": "Goal Planning ke liye humein sahi amount aur duration define karna hota hai.",
-  "investment": "Investment ek important financial decision hai. Planning zaroori hai!"
+  "sip kya hota hai": "SIP ka matlab hai Systematic Investment Plan, jisme aap fixed amount regular invest karte hain.",
+  "mutual fund kya hota hai": "Mutual fund me log apna paisa ek saath lagate hain aur expert usse manage karta hai.",
+  "growfin services": "GrowFin Wealth SIP planning, mutual funds, retirement aur goal planning me madad karta hai.",
+  "elss fund kya hai": "ELSS tax saving mutual fund hai jisme 3 saal ka lock-in period hota hai aur tax benefit milta hai."
 };
 
 function sendMessage() {
@@ -25,56 +162,48 @@ function sendMessage() {
   if (!userText) return;
   addMessage(userText, "user");
   input.value = "";
-
   botThinking();
-
   setTimeout(() => {
-    let reply = smartReply(userText);
-    removeThinking();
-    botReply(reply.text);
-    if (reply.showCalculator) showCalculatorButton();
-    if (reply.showContact) showKnowMoreButton();
-  }, 400);
-}
+    let reply = "🙏 Maaf kijiye, mujhe iske baare me jaankari nahi hai.";
+    let found = false;
 
-function smartReply(text) {
-  let lowerText = text.toLowerCase();
-  let response = { text: "🙏 Maaf kijiye, mujhe iske baare me jaankari nahi hai.", showCalculator: false, showContact: false };
-
-  // Sabse pehle "calculator" word check
-  if (lowerText.includes("calculator")) {
-    response.text = "Aap apne investment planning ke liye Calculator ka use kar sakte hain! 📈";
-    response.showCalculator = true;
-    return response;
-  }
-
-  // FAQ based simple reply
-  for (let key in faqs) {
-    if (lowerText.includes(key)) {
-      response.text = faqs[key];
-      return response;
+    for (let key in faqs) {
+      if (userText.toLowerCase().includes(key)) {
+        reply = faqs[key];
+        found = true;
+        break;
+      }
     }
-  }
 
-  // Contact info
-  if (lowerText.includes('contact') || lowerText.includes('details') || lowerText.includes('jaankari') || lowerText.includes('form')) {
-    response.text = "Aap humse contact kar sakte hain! 📞";
-    response.showContact = true;
-  }
+    if (!found && (
+        userText.toLowerCase().includes("calculator ka link") ||
+        userText.toLowerCase().includes("investment calculator") ||
+        userText.toLowerCase().includes("sip calculator")
+      )) {
+      reply = "Aap apne investment planning ke liye Calculator ka use kar sakte hain! 📈";
+      botReply(reply);
+      showCalculatorButton();
+      return;
+    }
 
-  return response;
+    if (!found && (
+        userText.toLowerCase().includes("more") ||
+        userText.toLowerCase().includes("details") ||
+        userText.toLowerCase().includes("contact")
+      )) {
+      reply = "Aur jaankari ke liye neeche button dabaiye 📚";
+      botReply(reply);
+      showKnowMoreButton();
+      return;
+    }
+
+    botReply(reply);
+    showFAQOptions();
+  }, 600);
 }
 
 function botThinking() {
-  addMessage("FinFlora soch rahi hai...", "bot typing");
-}
-
-function removeThinking() {
-  const messages = document.getElementById("messages");
-  const lastMessage = messages.lastChild;
-  if (lastMessage && lastMessage.classList.contains("typing")) {
-    messages.removeChild(lastMessage);
-  }
+  addMessage("⏳ FinFlora soch rahi hai...", "bot");
 }
 
 function botReply(text) {
@@ -85,9 +214,6 @@ function addMessage(text, sender) {
   const messages = document.getElementById("messages");
   const div = document.createElement("div");
   div.className = "message " + sender;
-  if (sender === "bot typing") {
-    div.className = "message bot typing";
-  }
   div.innerText = text;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
@@ -133,3 +259,6 @@ document.getElementById("userInput").addEventListener("keypress", function(e) {
   }
 });
 </script>
+
+</body>
+</html>
