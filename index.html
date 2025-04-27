@@ -27,12 +27,13 @@
       position: relative;
     }
     #floraFace {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
       margin-top: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border: 3px solid #2E8B57;
     }
     #messages {
       flex: 1;
@@ -44,10 +45,12 @@
     .user, .bot {
       margin: 10px 0;
       max-width: 70%;
-      padding: 10px 15px;
-      border-radius: 18px;
+      padding: 12px 18px;
+      border-radius: 20px;
       animation: fadeIn 0.5s ease;
       position: relative;
+      font-size: 15px;
+      line-height: 1.4;
     }
     .user {
       background-color: #DCF8C6;
@@ -59,7 +62,7 @@
     }
     input[type="text"] {
       width: 70%;
-      padding: 12px;
+      padding: 14px;
       border: none;
       border-top: 1px solid #ccc;
       border-radius: 10px;
@@ -70,10 +73,11 @@
       background-color: #2E8B57;
       color: white;
       border: none;
-      border-radius: 8px;
-      padding: 12px 20px;
+      border-radius: 10px;
+      padding: 14px 20px;
       margin: 10px;
       cursor: pointer;
+      font-weight: 600;
     }
     button:hover {
       background-color: #246b46;
@@ -88,7 +92,7 @@
     }
     #quick-replies button {
       margin: 5px;
-      padding: 8px 12px;
+      padding: 10px 14px;
       border: none;
       background: #1E90FF;
       color: white;
@@ -108,8 +112,8 @@
 </head>
 <body onload="startBot()">
 
-<!-- Cute Face of FinFlora -->
-<img id="floraFace" src="https://i.postimg.cc/y6qN23Rh/finflora-cute.png" alt="FinFlora Cute Face">
+<!-- Updated Cute Professional Cartoon Girl -->
+<img id="floraFace" src="https://i.postimg.cc/5yH7bbcv/finflora-final.png" alt="FinFlora Professional Face">
 
 <div id="chatbox">
   <button id="darkModeBtn" onclick="toggleDarkMode()">🌙</button>
@@ -121,19 +125,21 @@
 
 <script>
 const faqs = {
-  "sip kya hai": "SIP (Systematic Investment Plan) ek aisa tarika hai jisme aap har mahine thoda-thoda paisa invest karte ho Mutual Funds mein, apne financial goals achieve karne ke liye.",
-  "mutual fund kya hai": "Mutual Fund ek aisa investment hai jisme kai log apna paisa jodte hain aur expert managers un paise ko stocks, bonds mein invest karte hain.",
-  "growfin services": "GrowFin Wealth aapko Financial Planning, SIP Investment, Mutual Funds, Retirement Planning, aur Wealth Creation services provide karta hai!",
-  "growfin kya karta hai": "GrowFin aapki life goals achieve karne mein madad karta hai jaise bachat, investment aur financial security ke solutions de kar."
+  "sip kya hai": "SIP (Systematic Investment Plan) ek disciplined investment ka tareeka hai jisme har mahine ek fixed amount invest kiya jata hai mutual funds mein, taaki aap apne long-term goals achieve kar sakein.",
+  "mutual fund kya hai": "Mutual Fund ek professionally managed investment fund hai jisme kai investors ka paisa stocks, bonds, aur assets mein invest hota hai diversification aur growth ke liye.",
+  "growfin services": "GrowFin Wealth aapko financial planning, goal-based investing, retirement planning, tax saving aur wealth creation jaise smart solutions provide karta hai.",
+  "retirement planning": "Retirement Planning ka matlab hai future ke liye paise ki tayari, jisme aap systematically invest karte hain taaki aapki retirement ke baad ki life financially secure rahe.",
+  "tax saving": "Tax saving ke liye aap ELSS mutual funds, NPS, aur tax-saving FDs jaise instruments ka use kar sakte hain apni taxable income kam karne ke liye.",
+  "emergency fund": "Emergency Fund ek aise savings hoti hai jo aap unexpected situations (jaise medical emergency, job loss) ke liye tayaar karte hain. Isme aapka 3-6 mahine ka kharcha cover hona chahiye."
 };
 
 function startBot() {
-  botReply("\uD83C\uDF38 Namaste! Main FinFlora hoon 🌸 Aapki financial journey ka dost! Kaise madad kar sakti hoon?");
+  botReply("\uD83C\uDF38 Namaste! Main FinFlora hoon \ud83c\udf38 Aapki financial journey ka dost! Kaise madad kar sakti hoon?");
 }
 
 function sendMessage() {
-  let userText = document.getElementById("userInput").value.toLowerCase();
-  if (userText.trim() === "") return;
+  let userText = document.getElementById("userInput").value.toLowerCase().trim();
+  if (!userText) return;
 
   addMessage(userText, "user");
   document.getElementById("userInput").value = "";
@@ -142,7 +148,7 @@ function sendMessage() {
 
   setTimeout(() => {
     removeTypingAnimation();
-    let answer = "🙏 Maaf kijiye, is vishay par mere paas abhi jaankari nahi hai. Kripya kuch aur poochiye!";
+    let answer = "\ud83d\ude4f Maaf kijiye, is vishay par mere paas jaankari nahi hai. Aap kuch aur pooch sakte hain!";
     for (let key in faqs) {
       if (userText.includes(key)) {
         answer = faqs[key];
@@ -151,14 +157,14 @@ function sendMessage() {
     }
     addMessage(answer, "bot");
     playSound();
-  }, 1000);
+  }, 800);
 }
 
 function addMessage(text, sender) {
   const messageArea = document.getElementById("messages");
   const newMsg = document.createElement("div");
   newMsg.className = sender;
-  newMsg.innerHTML = text;
+  newMsg.innerText = text;
   messageArea.appendChild(newMsg);
   messageArea.scrollTop = messageArea.scrollHeight;
 }
@@ -168,7 +174,7 @@ function addTypingAnimation() {
   const typing = document.createElement("div");
   typing.className = "bot";
   typing.id = "typing";
-  typing.innerHTML = '<span class="typing"></span><span class="typing"></span><span class="typing"></span>';
+  typing.innerHTML = 'FinFlora soch rahi hai...';
   messageArea.appendChild(typing);
   messageArea.scrollTop = messageArea.scrollHeight;
 }
@@ -188,7 +194,7 @@ function toggleDarkMode() {
 }
 
 // Quick Replies
-const replies = ["SIP kya hai?", "Mutual Fund kya hai?", "GrowFin services?"];
+const replies = ["SIP kya hai?", "Mutual Fund kya hai?", "GrowFin services?", "Retirement planning?", "Tax saving?", "Emergency Fund?"];
 const quickReplyArea = document.getElementById("quick-replies");
 replies.forEach(reply => {
   let btn = document.createElement("button");
@@ -199,11 +205,7 @@ replies.forEach(reply => {
   };
   quickReplyArea.appendChild(btn);
 });
+</script>
 
-// Speech to Text
-if ('webkitSpeechRecognition' in window) {
-  const recognition = new webkitSpeechRecognition();
-  recognition.lang = 'hi-IN';
-  recognition.continuous = false;
-
-  document.getElementById("userInput").addEventListener("click", function() {
+</body>
+</html>
