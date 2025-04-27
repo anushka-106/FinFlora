@@ -2,7 +2,8 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
-  <title>FinFlora Chatbot - GrowFin Wealth</title>
+  <title>FinFlora - GrowFin Wealth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -10,13 +11,38 @@
       background: linear-gradient(to right, #e0f7fa, #ffffff);
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      min-height: 100vh;
       align-items: center;
+      justify-content: center;
+    }
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #e0f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      flex-direction: column;
+    }
+    #loader img {
+      width: 100px;
+      animation: spin 2s linear infinite;
+    }
+    #loader span {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #2E8B57;
+      font-weight: bold;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     #chatbox {
       background: #ffffff;
-      width: 90%;
-      max-width: 500px;
+      width: 90%; max-width: 500px;
       margin-top: 20px;
       border-radius: 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.1);
@@ -27,8 +53,7 @@
       position: relative;
     }
     #floraFace {
-      width: 120px;
-      height: 120px;
+      width: 120px; height: 120px;
       border-radius: 50%;
       object-fit: cover;
       margin-top: 20px;
@@ -51,23 +76,19 @@
       position: relative;
       font-size: 15px;
       line-height: 1.4;
+      word-wrap: break-word;
     }
-    .user {
-      background-color: #DCF8C6;
-      align-self: flex-end;
-    }
-    .bot {
-      background-color: #f1f1f1;
-      align-self: flex-start;
-    }
+    .user { background-color: #DCF8C6; align-self: flex-end; }
+    .bot { background-color: #f1f1f1; align-self: flex-start; }
     input[type="text"] {
-      width: 70%;
+      width: 65%;
       padding: 14px;
       border: none;
       border-top: 1px solid #ccc;
       border-radius: 10px;
       margin: 10px;
       outline: none;
+      font-size: 15px;
     }
     button {
       background-color: #2E8B57;
@@ -78,10 +99,9 @@
       margin: 10px;
       cursor: pointer;
       font-weight: 600;
+      font-size: 15px;
     }
-    button:hover {
-      background-color: #246b46;
-    }
+    button:hover { background-color: #246b46; }
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(10px);}
       to {opacity: 1; transform: translateY(0);}
@@ -98,6 +118,7 @@
       color: white;
       border-radius: 10px;
       cursor: pointer;
+      font-size: 14px;
     }
     #darkModeBtn {
       position: absolute;
@@ -108,33 +129,71 @@
       font-size: 24px;
       cursor: pointer;
     }
+    footer {
+      margin: 20px 0;
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      input[type="text"] {
+        width: 60%;
+      }
+      #floraFace {
+        width: 90px; height: 90px;
+      }
+      #chatbox {
+        height: 75vh;
+      }
+    }
   </style>
 </head>
-<body onload="startBot()">
 
-<!-- Updated Cute Professional Cartoon Girl -->
-<img id="floraFace" src="https://i.postimg.cc/5yH7bbcv/finflora-final.png" alt="FinFlora Professional Face">
+<body onload="initBot()">
+
+<div id="loader">
+  <img src="https://i.postimg.cc/5yH7bbcv/finflora-final.png" alt="Loading...">
+  <span>FinFlora is blooming... 🌸</span>
+</div>
+
+<img id="floraFace" src="https://i.postimg.cc/5yH7bbcv/finflora-final.png" alt="FinFlora">
 
 <div id="chatbox">
   <button id="darkModeBtn" onclick="toggleDarkMode()">🌙</button>
   <div id="messages"></div>
   <div id="quick-replies"></div>
-  <input type="text" id="userInput" placeholder="Apna sawaal likhiye ya boliye...">
-  <button onclick="sendMessage()">Send</button>
+  <div style="display: flex; align-items: center; padding: 10px;">
+    <input type="text" id="userInput" placeholder="Apna sawaal likhiye...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
 </div>
+
+<footer>
+  Designed with ❤️ by Anushka Gaiki
+</footer>
 
 <script>
 const faqs = {
-  "sip kya hai": "SIP (Systematic Investment Plan) ek disciplined investment ka tareeka hai jisme har mahine ek fixed amount invest kiya jata hai mutual funds mein, taaki aap apne long-term goals achieve kar sakein.",
-  "mutual fund kya hai": "Mutual Fund ek professionally managed investment fund hai jisme kai investors ka paisa stocks, bonds, aur assets mein invest hota hai diversification aur growth ke liye.",
-  "growfin services": "GrowFin Wealth aapko financial planning, goal-based investing, retirement planning, tax saving aur wealth creation jaise smart solutions provide karta hai.",
-  "retirement planning": "Retirement Planning ka matlab hai future ke liye paise ki tayari, jisme aap systematically invest karte hain taaki aapki retirement ke baad ki life financially secure rahe.",
-  "tax saving": "Tax saving ke liye aap ELSS mutual funds, NPS, aur tax-saving FDs jaise instruments ka use kar sakte hain apni taxable income kam karne ke liye.",
-  "emergency fund": "Emergency Fund ek aise savings hoti hai jo aap unexpected situations (jaise medical emergency, job loss) ke liye tayaar karte hain. Isme aapka 3-6 mahine ka kharcha cover hona chahiye."
+  "sip kya hai": "SIP ek investment technique hai jisme aap har mahine thoda paisa invest karte hain mutual funds mein.",
+  "mutual fund kya hai": "Mutual Fund ek professionally managed fund hai jisme kai investors ka paisa alag alag stocks/bonds mein invest hota hai.",
+  "growfin services": "GrowFin aapko SIPs, Mutual Funds, Retirement Planning, Child Education aur Wealth Creation ke solutions deta hai.",
+  "retirement planning": "Retirement planning ke liye GrowFin customized plans banata hai taaki aap apna safe aur secure retirement enjoy kar saken.",
+  "tax saving": "GrowFin aapko ELSS aur other tax-saving options suggest karta hai jo Section 80C ke andar aate hain.",
+  "emergency fund": "Emergency Fund unexpected situations ke liye ek zaruri safety net hai. GrowFin ke saath apna emergency fund plan kariye.",
+  "anushka gaiki kaun hai": "Anushka Gaiki ek AMFI-certified Financial Advisor aur GrowFin Wealth ki founder hain.",
+  "anushka kaun hai": "Anushka Gaiki ek trusted Financial Expert hain jo smart investing aur planning mein madad karti hain.",
+  "growfin owner kaun hai": "GrowFin Wealth ki founder aur financial advisor hain Anushka Gaiki."
 };
 
+function initBot() {
+  setTimeout(() => {
+    document.getElementById('loader').style.display = 'none';
+    startBot();
+  }, 2000);
+}
+
 function startBot() {
-  botReply("\uD83C\uDF38 Namaste! Main FinFlora hoon \ud83c\udf38 Aapki financial journey ka dost! Kaise madad kar sakti hoon?");
+  botReply("🌸 Namaste! Main FinFlora hoon.\nMain aapki financial journey mein madad karne ke liye yahaan hoon! Kuch poochhna chahenge?");
 }
 
 function sendMessage() {
@@ -148,7 +207,7 @@ function sendMessage() {
 
   setTimeout(() => {
     removeTypingAnimation();
-    let answer = "\ud83d\ude4f Maaf kijiye, is vishay par mere paas jaankari nahi hai. Aap kuch aur pooch sakte hain!";
+    let answer = "🙏 Maaf kijiye, is vishay par mere paas abhi jaankari nahi hai. Aap kuch aur pooch sakte hain!";
     for (let key in faqs) {
       if (userText.includes(key)) {
         answer = faqs[key];
@@ -174,7 +233,7 @@ function addTypingAnimation() {
   const typing = document.createElement("div");
   typing.className = "bot";
   typing.id = "typing";
-  typing.innerHTML = 'FinFlora soch rahi hai...';
+  typing.innerHTML = '⏳ FinFlora soch rahi hai...';
   messageArea.appendChild(typing);
   messageArea.scrollTop = messageArea.scrollHeight;
 }
@@ -193,7 +252,13 @@ function toggleDarkMode() {
   document.body.classList.toggle("dark-mode");
 }
 
-// Quick Replies
+// Enter key also sends message
+document.getElementById("userInput").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    sendMessage();
+  }
+});
+
 const replies = ["SIP kya hai?", "Mutual Fund kya hai?", "GrowFin services?", "Retirement planning?", "Tax saving?", "Emergency Fund?"];
 const quickReplyArea = document.getElementById("quick-replies");
 replies.forEach(reply => {
