@@ -1,271 +1,108 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8">
-  <title>FinFlora - GrowFin Wealth</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      background: linear-gradient(to right, #e0f7fa, #ffffff);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-    }
-    #loader {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #e0f7fa;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    #loader img {
-      width: 100px;
-      animation: spin 2s linear infinite;
-    }
-    #loader span {
-      margin-top: 10px;
-      font-size: 18px;
-      color: #2E8B57;
-      font-weight: bold;
-    }
-    @keyframes spin {
-      0% {transform: rotate(0deg);}
-      100% {transform: rotate(360deg);}
-    }
-    #chatbox {
-      background: #ffffff;
-      width: 90%; max-width: 500px;
-      margin-top: 30px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      height: 75vh;
-      overflow: hidden;
-      position: relative;
-    }
-    #floraFace {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-top: 20px;
-      object-fit: cover;
-      border: 3px solid #2E8B57;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    #messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
-    .user, .bot {
-      max-width: 70%;
-      padding: 12px 18px;
-      border-radius: 20px;
-      margin: 10px 0;
-      font-size: 15px;
-      line-height: 1.4;
-      word-wrap: break-word;
-    }
-    .user { background-color: #DCF8C6; align-self: flex-end; }
-    .bot { background-color: #f1f1f1; align-self: flex-start; }
-    input[type="text"] {
-      width: 65%;
-      padding: 14px;
-      border: none;
-      border-top: 1px solid #ccc;
-      border-radius: 10px;
-      margin: 10px;
-      outline: none;
-      font-size: 15px;
-    }
-    button {
-      background-color: #2E8B57;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 20px;
-      margin: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover { background-color: #246b46; }
-    #quick-replies button {
-      margin: 5px;
-      padding: 10px 14px;
-      border: none;
-      background: #1E90FF;
-      color: white;
-      border-radius: 10px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    #darkModeBtn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-    }
-    footer {
-      margin: 20px 0;
-      font-size: 14px;
-      color: #555;
-      text-align: center;
-    }
-    @media (max-width: 600px) {
-      input[type="text"] { width: 60%; }
-      #floraFace { width: 90px; height: 90px; }
-      #chatbox { height: 70vh; }
-    }
-  </style>
-</head>
-
-<body onload="initBot()">
-
-<div id="loader">
-  <img src="https://i.postimg.cc/5yH7bbcv/finflora-final.png" alt="Loading...">
-  <span>FinFlora is blooming... 🌸</span>
-</div>
-
-<img id="floraFace" src="https://i.postimg.cc/5yH7bbcv/finflora-final.png" alt="FinFlora">
-
-<div id="chatbox">
-  <button id="darkModeBtn" onclick="toggleDarkMode()">🌙</button>
-  <div id="messages"></div>
-  <div id="quick-replies"></div>
-  <div style="display: flex; align-items: center; padding: 10px;">
-    <input type="text" id="userInput" placeholder="Apna sawaal likhiye...">
-    <button onclick="sendMessage()">Send</button>
-  </div>
-</div>
-
-<div style="text-align: center; margin-top: 30px;">
-  <a href="mailto:growfinwealthofficial@gmail.com"
-     style="background-color: #2E8B57; color: white; padding: 15px 30px; text-decoration: none; font-size: 18px; border-radius: 8px; margin: 10px; display: inline-block;">
-    📧 Email Us
-  </a>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdFeaJqA8Y6VsM6Epz5bRXvQqAZuJwyT6zTfz-hUha_FjO6-w/viewform?usp=sharing"
-     target="_blank"
-     style="background-color: #1E90FF; color: white; padding: 15px 30px; text-decoration: none; font-size: 18px; border-radius: 8px; margin: 10px; display: inline-block;">
-    📝 Fill Contact Form
-  </a>
-</div>
-
-<div style="margin-top: 40px; width: 90%; max-width: 600px;">
-  <iframe src="https://anushka-106.github.io/GrowFinWealth-Multi-calculator/"
-          style="width:100%; height:500px; border:none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);" 
-          allowfullscreen>
-  </iframe>
-</div>
-
-<footer>
-  Designed with ❤️ by Anushka Gaiki
-</footer>
-
 <script>
 const faqs = {
-  "sip kya hota hai": "Namaste! 🌸 SIP ka full form hai Systematic Investment Plan. Isme aap har mahine ek fixed amount invest karte hain mutual fund me, taaki aapka bada goal aaram se poora ho jaye.",
-  "sip se kaise invest karte hain": "Aap ek mutual fund scheme choose karte ho, apna monthly amount decide karte ho, aur automatic bank deduction setup karte ho. Investment regular chalta rahega! 🌼",
-  "minimum sip kitni hoti hai": "Aap ₹500 per month se bhi apna SIP start kar sakte hain. Kuch schemes me ₹1000 minimum hota hai.",
-  "sip aur lumpsum me kya fark hai": "SIP me aap monthly invest karte hain, aur Lumpsum me ek saath bada amount. SIP market ke ups-downs ka benefit deta hai.",
-  "mutual fund kya hota hai": "Mutual fund ek pool hai jisme kai log apna paisa invest karte hain, aur expert fund manager stocks/bonds me lagata hai.",
-  "mutual funds safe hain kya": "Mutual Funds SEBI ke rules ke under aate hain. Risk fund ke type pe depend karta hai.",
-  "risk kaise samjhein": "Risk fund ke type aur market par depend karta hai. High return wale funds ka risk bhi high hota hai.",
-  "lumpsum kab karein": "Jab ek bada amount ek saath invest karna ho aur long term view ho, tab Lumpsum investment sahi rahta hai.",
-  "best mutual fund kaise choose karein": "Fund performance, risk level, fund manager ka experience aur aapke goal ko dekhkar choose karein.",
-  "mutual fund returns": "Equity funds average 10-15% aur debt funds 6-8% returns de sakte hain, market conditions ke hisaab se.",
-  "mutual fund tax": "Equity fund returns ₹1 lakh se upar 10% LTCG tax lagta hai. Debt fund pe alag rules hain.",
-  "elss fund kya hai": "ELSS ek tax saving mutual fund hai, jo Section 80C ke under ₹1.5 lakh tak tax benefit deta hai, aur 3 saal lock-in hota hai.",
-  "growfin services": "GrowFin Wealth smart mutual fund investment, SIP planning, retirement planning aur goal-based advisory services deta hai!",
-  "growfin ko choose kyu karein": "GrowFin Wealth personal attention, trustworthy advice aur safe investment options provide karta hai. 🌷",
-  "growfin wealth kya hai": "GrowFin Wealth ek trusted mutual fund distribution aur planning platform hai, designed by Anushka Gaiki. 🌸",
-  "anushka gaiki kaun hai": "Anushka Gaiki ek AMFI-registered mutual fund distributor aur GrowFin Wealth ki founder hain."
+  "sip kya hota hai": "SIP ka matlab hai Systematic Investment Plan, jisme aap fixed amount regular invest karte hain.",
+  "mutual fund kya hota hai": "Mutual fund me log apna paisa ek saath lagate hain aur expert usse manage karta hai.",
+  "growfin services": "GrowFin Wealth SIP planning, mutual funds, retirement aur goal planning me madad karta hai.",
+  "elss fund kya hai": "ELSS tax saving mutual fund hai jisme 3 saal ka lock-in period hota hai aur tax benefit milta hai."
 };
 
-const closingLines = [
-  "I hope maine aapke sawaal ka sahi samadhan diya! 🙏",
-  "Dhanyawaad, FinFlora se baat karne ke liye! 🌸 Apka din shubh ho!",
-  "Have a nice day! Bye from FinFlora! 🌼",
-  "Kisi aur madad ke liye Contact Buttons ka use kijiye! 🌟"
-];
-
-function initBot() {
-  setTimeout(() => {
-    document.getElementById('loader').style.display = 'none';
-    startBot();
-  }, 2000);
-}
-
-function startBot() {
-  botReply("🌸 Namaste! Main FinFlora hoon. Main aapki financial journey mein madad karne ke liye yahaan hoon! Aap apna sawaal likhiye...");
-}
-
 function sendMessage() {
-  let userText = document.getElementById("userInput").value.toLowerCase().trim();
+  let input = document.getElementById("userInput");
+  let userText = input.value.trim();
   if (!userText) return;
   addMessage(userText, "user");
-  document.getElementById("userInput").value = "";
-  addTypingAnimation();
+  input.value = "";
+  botThinking();
   setTimeout(() => {
-    removeTypingAnimation();
-    let answer = "🙏 Maaf kijiye, is vishay par mere paas abhi jaankari nahi hai. Aap kuch aur pooch sakte hain!";
+    let reply = "🙏 Maaf kijiye, mujhe iske baare me jaankari nahi hai.";
+    let found = false;
+
     for (let key in faqs) {
-      if (userText.includes(key)) {
-        answer = faqs[key];
+      if (userText.toLowerCase().includes(key)) {
+        reply = faqs[key];
+        found = true;
         break;
       }
     }
-    addMessage(answer + "\n\n" + randomClosing(), "bot");
-    playSound();
+
+    // Check for calculator related queries
+    if (!found && (
+        userText.toLowerCase().includes("calculator") ||
+        userText.toLowerCase().includes("invest") ||
+        userText.toLowerCase().includes("kitna") ||
+        userText.toLowerCase().includes("goal planning") ||
+        userText.toLowerCase().includes("sip")
+      )) {
+      reply = "Aap apne investment planning ke liye Calculator ka use kar sakte hain! 📈";
+      botReply(reply);
+      showCalculatorButton();
+      return;
+    }
+
+    // Check for more information
+    if (!found && (
+        userText.toLowerCase().includes("more") ||
+        userText.toLowerCase().includes("details") ||
+        userText.toLowerCase().includes("jaankari") ||
+        userText.toLowerCase().includes("contact")
+      )) {
+      reply = "Aur jaankari ke liye neeche button dabaiye 📚";
+      botReply(reply);
+      showKnowMoreButton();
+      return;
+    }
+
+    botReply(reply);
+    showFAQOptions();
   }, 1000);
 }
 
+function showCalculatorButton() {
+  const quickReplies = document.getElementById("quickReplies");
+  quickReplies.innerHTML = "";
+  quickReplies.style.display = 'flex';
+
+  const btn = document.createElement("button");
+  btn.innerText = "📈 Calculator Dekhein";
+  btn.onclick = () => {
+    botReply("Yeh raha aapka Calculator! 📊");
+    document.getElementById("calculatorSection").style.display = 'block';
+    document.getElementById("contactButtons").style.display = 'block';
+    document.getElementById("quickReplies").style.display = 'none';
+  };
+  quickReplies.appendChild(btn);
+}
+
+function showKnowMoreButton() {
+  const quickReplies = document.getElementById("quickReplies");
+  quickReplies.innerHTML = "";
+  quickReplies.style.display = 'flex';
+
+  const btn = document.createElement("button");
+  btn.innerText = "📚 Contact aur Details";
+  btn.onclick = () => {
+    botReply("Aap hume contact kar sakte hain ya form bhar sakte hain! ✨");
+    document.getElementById("contactButtons").style.display = 'block';
+    document.getElementById("quickReplies").style.display = 'none';
+  };
+  quickReplies.appendChild(btn);
+}
+
+function botThinking() {
+  addMessage("⏳ FinFlora soch rahi hai...", "bot");
+}
+
+function botReply(text) {
+  addMessage(text, "bot");
+}
+
 function addMessage(text, sender) {
-  const messageArea = document.getElementById("messages");
-  const newMsg = document.createElement("div");
-  newMsg.className = sender;
-  newMsg.innerText = text;
-  messageArea.appendChild(newMsg);
-  messageArea.scrollTop = messageArea.scrollHeight;
-}
-
-function addTypingAnimation() {
-  const messageArea = document.getElementById("messages");
-  const typing = document.createElement("div");
-  typing.className = "bot";
-  typing.id = "typing";
-  typing.innerHTML = '⏳ FinFlora soch rahi hai...';
-  messageArea.appendChild(typing);
-  messageArea.scrollTop = messageArea.scrollHeight;
-}
-
-function removeTypingAnimation() {
-  const typing = document.getElementById("typing");
-  if (typing) typing.remove();
-}
-
-function playSound() {
-  const audio = new Audio("https://www.soundjay.com/buttons/sounds/button-09.mp3");
-  audio.play();
-}
-
-function randomClosing() {
-  return closingLines[Math.floor(Math.random() * closingLines.length)];
-}
-
-function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
+  const messages = document.getElementById("messages");
+  const div = document.createElement("div");
+  div.className = "message " + sender;
+  div.innerText = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
 }
 
 document.getElementById("userInput").addEventListener("keypress", function(e) {
@@ -273,19 +110,4 @@ document.getElementById("userInput").addEventListener("keypress", function(e) {
     sendMessage();
   }
 });
-
-const replies = ["SIP kya hota hai?", "Mutual Fund kya hota hai?", "GrowFin Services?", "ELSS Fund kya hai?", "Retirement Planning?", "Tax Saving Options?"];
-const quickReplyArea = document.getElementById("quick-replies");
-replies.forEach(reply => {
-  let btn = document.createElement("button");
-  btn.innerText = reply;
-  btn.onclick = () => {
-    document.getElementById("userInput").value = reply;
-    sendMessage();
-  };
-  quickReplyArea.appendChild(btn);
-});
 </script>
-
-</body>
-</html>
