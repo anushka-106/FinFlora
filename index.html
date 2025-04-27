@@ -11,13 +11,13 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+      align-items: center;
     }
     #chatbox {
       background: #ffffff;
       width: 90%;
       max-width: 500px;
-      margin: auto;
-      margin-top: 30px;
+      margin-top: 20px;
       border-radius: 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       display: flex;
@@ -25,6 +25,14 @@
       height: 80vh;
       overflow: hidden;
       position: relative;
+    }
+    #floraFace {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
     #messages {
       flex: 1;
@@ -70,19 +78,6 @@
     button:hover {
       background-color: #246b46;
     }
-    .typing {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: #333;
-      border-radius: 50%;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0% {opacity: 0;}
-      50% {opacity: 1;}
-      100% {opacity: 0;}
-    }
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(10px);}
       to {opacity: 1; transform: translateY(0);}
@@ -113,23 +108,27 @@
 </head>
 <body onload="startBot()">
 
+<!-- Cute Face of FinFlora -->
+<img id="floraFace" src="https://i.postimg.cc/y6qN23Rh/finflora-cute.png" alt="FinFlora Cute Face">
+
 <div id="chatbox">
   <button id="darkModeBtn" onclick="toggleDarkMode()">🌙</button>
   <div id="messages"></div>
   <div id="quick-replies"></div>
-  <input type="text" id="userInput" placeholder="Apna sawaal yahan boliye ya likhiye...">
+  <input type="text" id="userInput" placeholder="Apna sawaal likhiye ya boliye...">
   <button onclick="sendMessage()">Send</button>
 </div>
 
 <script>
 const faqs = {
-  "sip kya hota hai": "SIP ka full form hai Systematic Investment Plan...",
-  "mutual fund kya hai": "Mutual Fund ek aisa investment option hai jahan...",
-  "growfin kya karta hai": "GrowFin Wealth financial planning aur mutual funds me help karta hai!",
+  "sip kya hai": "SIP (Systematic Investment Plan) ek aisa tarika hai jisme aap har mahine thoda-thoda paisa invest karte ho Mutual Funds mein, apne financial goals achieve karne ke liye.",
+  "mutual fund kya hai": "Mutual Fund ek aisa investment hai jisme kai log apna paisa jodte hain aur expert managers un paise ko stocks, bonds mein invest karte hain.",
+  "growfin services": "GrowFin Wealth aapko Financial Planning, SIP Investment, Mutual Funds, Retirement Planning, aur Wealth Creation services provide karta hai!",
+  "growfin kya karta hai": "GrowFin aapki life goals achieve karne mein madad karta hai jaise bachat, investment aur financial security ke solutions de kar."
 };
 
 function startBot() {
-  botReply("\uD83C\uDF38 Namaste! FinFlora mein aapka swagat hai! Kaise madad kar sakti hoon aapki? ");
+  botReply("\uD83C\uDF38 Namaste! Main FinFlora hoon 🌸 Aapki financial journey ka dost! Kaise madad kar sakti hoon?");
 }
 
 function sendMessage() {
@@ -143,7 +142,7 @@ function sendMessage() {
 
   setTimeout(() => {
     removeTypingAnimation();
-    let answer = "Maaf kijiye, is topic pe mere paas jankari nahi hai.";
+    let answer = "🙏 Maaf kijiye, is vishay par mere paas abhi jaankari nahi hai. Kripya kuch aur poochiye!";
     for (let key in faqs) {
       if (userText.includes(key)) {
         answer = faqs[key];
@@ -208,14 +207,3 @@ if ('webkitSpeechRecognition' in window) {
   recognition.continuous = false;
 
   document.getElementById("userInput").addEventListener("click", function() {
-    recognition.start();
-  });
-
-  recognition.onresult = function(event) {
-    document.getElementById("userInput").value = event.results[0][0].transcript;
-  }
-}
-</script>
-
-</body>
-</html>
