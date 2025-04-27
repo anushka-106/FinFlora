@@ -136,8 +136,8 @@ const faqs = {
 };
 
 function sendMessage() {
-  let input = document.getElementById("userInput");
-  let userText = input.value.trim();
+  const input = document.getElementById("userInput");
+  const userText = input.value.trim();
   if (!userText) return;
   addMessage(userText, "user");
   input.value = "";
@@ -154,26 +154,32 @@ function sendMessage() {
       }
     }
 
-    if (!found && (
-        userText.toLowerCase().includes("calculator") ||
-        userText.toLowerCase().includes("invest") ||
-        userText.toLowerCase().includes("kitna") ||
-        userText.toLowerCase().includes("goal planning") ||
-        userText.toLowerCase().includes("sip")
-      )) {
-      reply = "Aap apne investment planning ke liye Calculator ka use kar sakte hain!";
+    if (found) {
+      botReply(reply);
+      showFAQOptions();
+      return;
+    }
+
+    if (
+      userText.toLowerCase().includes("calculator") ||
+      userText.toLowerCase().includes("invest") ||
+      userText.toLowerCase().includes("kitna") ||
+      userText.toLowerCase().includes("goal planning") ||
+      userText.toLowerCase().includes("sip")
+    ) {
+      reply = "Aap apne investment planning ke liye Calculator ka use kar sakte hain! 📈";
       botReply(reply);
       showCalculatorButton();
       return;
     }
 
-    if (!found && (
-        userText.toLowerCase().includes("more") ||
-        userText.toLowerCase().includes("details") ||
-        userText.toLowerCase().includes("jaankari") ||
-        userText.toLowerCase().includes("contact")
-      )) {
-      reply = "Aur jaankari ke liye neeche button dabaiye.";
+    if (
+      userText.toLowerCase().includes("more") ||
+      userText.toLowerCase().includes("details") ||
+      userText.toLowerCase().includes("jaankari") ||
+      userText.toLowerCase().includes("contact")
+    ) {
+      reply = "Aur jaankari ke liye neeche button dabaiye 📚";
       botReply(reply);
       showKnowMoreButton();
       return;
@@ -212,8 +218,7 @@ function showCalculatorButton() {
 
   btn.onclick = () => {
     botReply("Yeh raha aapka Calculator! 📊");
-    // Calculator Section Show Logic Here
-    alert('Calculator section dikhana hai!'); 
+    alert('Calculator section dikhana hai!');
     quickReplies.style.display = 'none';
   };
   quickReplies.appendChild(btn);
@@ -230,7 +235,6 @@ function showKnowMoreButton() {
 
   btn.onclick = () => {
     botReply("Aap hume contact kar sakte hain ya form bhar sakte hain! ✨");
-    // Contact Section Show Logic Here
     alert('Contact ya form section dikhana hai!');
     quickReplies.style.display = 'none';
   };
