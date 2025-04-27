@@ -1,3 +1,27 @@
+<style>
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.icon-button:hover {
+  background-color: #45a049;
+}
+.icon-button img {
+  width: 24px;
+  height: 24px;
+}
+</style>
+
 <script>
 const faqs = {
   "sip kya hota hai": "SIP ka matlab hai Systematic Investment Plan, jisme aap fixed amount regular invest karte hain.",
@@ -33,7 +57,7 @@ function sendMessage() {
         userText.toLowerCase().includes("goal planning") ||
         userText.toLowerCase().includes("sip")
       )) {
-      reply = "Aap apne investment planning ke liye Calculator ka use kar sakte hain! 📈";
+      reply = "Aap apne investment planning ke liye Calculator ka use kar sakte hain!";
       botReply(reply);
       showCalculatorButton();
       return;
@@ -46,7 +70,7 @@ function sendMessage() {
         userText.toLowerCase().includes("jaankari") ||
         userText.toLowerCase().includes("contact")
       )) {
-      reply = "Aur jaankari ke liye neeche button dabaiye 📚";
+      reply = "Aur jaankari ke liye neeche button dabaiye.";
       botReply(reply);
       showKnowMoreButton();
       return;
@@ -63,7 +87,9 @@ function showCalculatorButton() {
   quickReplies.style.display = 'flex';
 
   const btn = document.createElement("button");
-  btn.innerText = "📈 Calculator Dekhein";
+  btn.className = "icon-button";
+  btn.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Calculator"> Calculator Dekhein`;
+
   btn.onclick = () => {
     botReply("Yeh raha aapka Calculator! 📊");
     document.getElementById("calculatorSection").style.display = 'block';
@@ -79,7 +105,9 @@ function showKnowMoreButton() {
   quickReplies.style.display = 'flex';
 
   const btn = document.createElement("button");
-  btn.innerText = "📚 Contact aur Details";
+  btn.className = "icon-button";
+  btn.innerHTML = `<img src="https://cdn-icons-png.flaticon.com/512/1828/1828817.png" alt="Info"> Contact aur Details`;
+
   btn.onclick = () => {
     botReply("Aap hume contact kar sakte hain ya form bhar sakte hain! ✨");
     document.getElementById("contactButtons").style.display = 'block';
